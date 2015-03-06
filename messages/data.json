@@ -1,26 +1,17 @@
 [
   {
     "id": 1,
-<<<<<<< HEAD
     "content": "I went to a really emotional wedding the other day.",
     "username": "Limz"
-=======
-    "content": "Do you really want to hurt me?",
-    "username": "Boy"
->>>>>>> master
   },
   {
     "id": 2,
     "content": "Do you really want to make me cry?",
-<<<<<<< HEAD
     "username": "Cat"
   },
   {
     "id": 3,
     "content": "Even the cake was in tiers.",
     "username": "Limz"
-=======
-    "username": "George"
->>>>>>> master
   }
 ]
