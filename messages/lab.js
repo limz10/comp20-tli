@@ -10,7 +10,7 @@ function parse() {
 	data.send();
 
 	function displayMessages() {
-		messages = JSON.parse(data.responseText)
+		messages = JSON.parse(data.responseText);
 		console.log(messages);	
 
 		var result = "";
@@ -18,7 +18,7 @@ function parse() {
 			result += "<p>" + messages[i]['username'] + " : " + messages[i]["content"] + "</p>";
 		}
 
-		document.getElementById("messages").innerHTML = data.responseText;
+		document.getElementById("messages").innerHTML = result;
 	}
 }
 
