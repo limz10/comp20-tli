@@ -5,7 +5,7 @@ function parse() {
 
 	var data = new XMLHttpRequest();
 
-	data.open("get", "http://messagehub.herokuapp.com/messages.json", true);
+	data.open("get", "data.json", true);
 	data.onreadystatechange = displayMessages;
 	data.send();
 
