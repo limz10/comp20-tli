@@ -10,6 +10,8 @@ function parse() {
 	data.send();
 
 	function displayMessages() {
+		console.log("In my callback function " + xhr.readyState);
+		
 		messages = JSON.parse(data.responseText);
 		console.log(messages);	
 
