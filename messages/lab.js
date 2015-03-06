@@ -11,7 +11,7 @@ function parse() {
 
 	function displayMessages() {
 		messages = JSON.parse(data.responseText)
-			
+		console.log(messages);	
 		document.getElementById("messages").innerHTML = data.responseText;
 	}
 }
