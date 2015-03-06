@@ -12,7 +12,6 @@ function parse() {
 	function displayMessages() {
 		if (data.readyState == 4 && data.status == 200) {
 			messages = JSON.parse(data.responseText);
-			console.log(messages);	
 
 			var result = "";
 			for (i = 0; i < messages.length; i++) {
