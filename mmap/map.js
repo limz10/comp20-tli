@@ -44,10 +44,11 @@ function renderMap()
 	console.log("update map and go there...");
 	map.panTo(me);
 	// Create a marker
+	var makerImage = "limz.jpg";
 	marker = new google.maps.Marker({
 		position: me,
 		title: "mli04",
-		icon: "limz.jpg"
+		icon: markerImage
 	});
 
 	marker.setMap(map);
