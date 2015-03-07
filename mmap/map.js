@@ -13,6 +13,7 @@ var map;
 var marker;
 var info_window = new google.maps.InfoWindow();
 var places;
+
 function init()
 {
 	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
@@ -53,13 +54,13 @@ function renderMap()
 		info_window.open(map, marker);
 	});
 	// Calling Google Places API
-var request = {
-	location: me,
-	radius: '500',
-	types: ['food']
-};
-service = new google.maps.places.PlacesService(map);
-service.search(request, callback);
+	var request = {
+		location: me,
+		radius: '500',
+		types: ['food']
+	};
+	service = new google.maps.places.PlacesService(map);
+	service.search(request, callback);
 }
 // Taken from http://code.google.com/apis/maps/documentation/javascript/places.html
 function callback(results, status)
