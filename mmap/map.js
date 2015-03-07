@@ -4,7 +4,7 @@ var myLng = 0;
 var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
-	zoom: 13, // The larger the zoom number, the bigger the zoom
+	zoom: 15, // The larger the zoom number, the bigger the zoom
 	center: me,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
 };
@@ -46,7 +46,8 @@ function renderMap()
 	// Create a marker
 	marker = new google.maps.Marker({
 		position: me,
-		title: "Here I Am!"
+		title: "mli04",
+		icon: "limz.jpg"
 	});
 
 	marker.setMap(map);
@@ -55,38 +56,5 @@ function renderMap()
 		info_window.setContent(marker.title);
 		info_window.open(map, marker);
 	});
-	// Calling Google Places API
-	var request = {
-		location: me,
-		radius: '500',
-		types: ['food']
-	};
-	service = new google.maps.places.PlacesService(map);
-	service.search(request, callback);
-}
-
-// Taken from http://code.google.com/apis/maps/documentation/javascript/places.html
-function callback(results, status)
-{
-	if (status == google.maps.places.PlacesServiceStatus.OK) {
-		alert("Got places back!");
-		places = results;
-		for (var i = 0; i < results.length; i++) {
-			createMarker(results[i]);
-		}
-	}
-}
-
-function createMarker(place)
-{
-	var placeLoc = place.geometry.location;
-	var marker = new google.maps.Marker({
-		map: map,
-		position: place.geometry.location
-	});
-	google.maps.event.addListener(marker, 'click', function() {
-		info_window.close();
-		info_window.setContent(place.name);
-		info_window.open(map, this);
-	});
+	
 }
