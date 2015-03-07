@@ -1,6 +1,6 @@
 
-var myLat;
-var myLng;
+var myLat = 0;
+var myLng = 0;
 var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
@@ -21,6 +21,7 @@ function init()
 	getMyLocation();
 	console.log("Call after getMyLocation()");
 }
+
 function getMyLocation() {
 	console.log("In getMyLocation()");
 	if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
@@ -40,6 +41,7 @@ function renderMap()
 {
 	me = new google.maps.LatLng(myLat, myLng);
 	// Update map and go there...
+	console.log("update map and go there...");
 	map.panTo(me);
 	// Create a marker
 	marker = new google.maps.Marker({
@@ -62,6 +64,7 @@ function renderMap()
 	service = new google.maps.places.PlacesService(map);
 	service.search(request, callback);
 }
+
 // Taken from http://code.google.com/apis/maps/documentation/javascript/places.html
 function callback(results, status)
 {
@@ -73,6 +76,7 @@ function callback(results, status)
 		}
 	}
 }
+
 function createMarker(place)
 {
 	var placeLoc = place.geometry.location;
