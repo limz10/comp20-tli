@@ -94,6 +94,10 @@ function renderMap(login, lat, lng) {
 }
 
 function haversine_formula (lat1, lat2, lon1, lon2) {
+	Number.prototype.toRad = function() {
+		return this * Math.PI / 180;
+	}
+	var R = 3959; //in miles
 	var x1 = lat2-lat1;
 	var dLat = x1.toRad();  
 	var x2 = lon2-lon1;
