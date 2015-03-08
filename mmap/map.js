@@ -37,7 +37,6 @@ function datastore(login, lat, lng) {
 	request.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
-	request.send(to_send);
 
 	function renderPeers () {
 		if(request.readyState == 4 && request.status == 200) {
@@ -48,7 +47,7 @@ function datastore(login, lat, lng) {
 			}
 		}
 	}
-	
+	request.send(to_send);
 }
 
 var marker;
