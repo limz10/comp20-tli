@@ -38,11 +38,10 @@ function datastore(login, lat, lng) {
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 	request.send(to_send);
-	
-	console.log(request.responseText);
 
 	function renderPeers () {
 		if(request.readyState == 4 && request.status == 200) {
+			console.log(request.responseText);
 			peers = JSON.parse(request.responseText);
 			for (i = 1; i < message.length; i++) {
 				rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
