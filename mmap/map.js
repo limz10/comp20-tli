@@ -40,6 +40,7 @@ function datastore(login, lat, lng) {
 
 	function renderPeers () {
 		if(request.readyState == 4 && request.status == 200) {
+			alert(request.responseText);
 			console.log(request.responseText);
 			peers = JSON.parse(request.responseText);
 			for (i = 1; i < message.length; i++) {
