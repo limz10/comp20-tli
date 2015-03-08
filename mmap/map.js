@@ -55,8 +55,7 @@ function renderPeers() {
 var marker;
 var info_window = new google.maps.InfoWindow();
 
-function renderMap_myLocation()
-{
+function renderMap_myLocation() {
 	me = new google.maps.LatLng(myLat, myLng);
 	// Update map and go there...
 	map.panTo(me);
@@ -64,20 +63,18 @@ function renderMap_myLocation()
 	var markerImage = "limz.jpg";
 	marker = new google.maps.Marker({
 		position: me,
-		title: "RobDennison",
 		icon: markerImage
 	});
 	marker.setMap(map);
 	// Open info window on click of marker
 	google.maps.event.addListener(marker, 'click', function() {
 		info_window.close();
-		info_window.setContent(marker.title);
+		info_window.setContent("RobDennison");
 		info_window.open(map, this);
 	});
 }
 
-function renderMap(login, lat, lng)
-{
+function renderMap(login, lat, lng) {
 	me = new google.maps.LatLng(lat, lng);
 
 	// Create a marker
@@ -86,10 +83,23 @@ function renderMap(login, lat, lng)
 		map: map
 	});
 	marker.setMap(map);
+
+	var distance = haversine_formula(lat, myLat, lng, myLng);
 	// Open info window on click of marker
 	google.maps.event.addListener(marker, 'click', function() {
 		info_window.close();
-		info_window.setContent(login);
+		info_window.setContent(login, distance);
 		info_window.open(map, this);
 	});
+}
+
+function haversine_formula (lat1, lat2, lon1, lon2) {
+	var x1 = lat2-lat1;
+	var dLat = x1.toRad();  
+	var x2 = lon2-lon1;
+	var dLon = x2.toRad();  
+	var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * Math.sin(dLon/2) * Math.sin(dLon/2);
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+	var d = R * c; 
+	return d;
 }
