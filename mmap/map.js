@@ -38,16 +38,16 @@ function datastore(login, lat, lng) {
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 
-	function renderPeers () {
-		if(request.readyState == 4 && request.status == 200) {
-			alert(request.responseText);
-			console.log(request.responseText);
-			peers = JSON.parse(request.responseText);
-			for (i = 1; i < message.length; i++) {
-				rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
-			}
+
+	if(request.readyState == 4 && request.status == 200) {
+		alert(request.responseText);
+		console.log(request.responseText);
+		peers = JSON.parse(request.responseText);
+		for (i = 1; i < message.length; i++) {
+			rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
 		}
 	}
+	
 	request.send(to_send);
 }
 
