@@ -88,7 +88,8 @@ function renderMap(login, lat, lng)
 	marker.setMap(map);
 	// Open info window on click of marker
 	google.maps.event.addListener(marker, 'click', function() {
+		info_window.close();
 		info_window.setContent(marker.title);
-		info_window.open(map, marker);
+		info_window.open(map, this);
 	});
 }
