@@ -39,7 +39,7 @@ function datastore(login, lat, lng) {
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 	request.send(to_send);
 
-	function () {
+	function renderPeers () {
 		if(request.readyState == 4 && request.status == 200) {
 			peers = JSON.parse(request.responseText);
 			for (i = 1; i < message.length; i++) {
