@@ -1,4 +1,4 @@
-
+var map;
 var myLat = 0;
 var myLng = 0;
 var request = new XMLHttpRequest();
@@ -8,11 +8,6 @@ var myOptions = {
 	center: me,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
 };
-
-var map;
-var marker;
-var info_window = new google.maps.InfoWindow();
-var places;
 
 function init()
 {
@@ -28,6 +23,7 @@ function getMyLocation() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			myLat = position.coords.latitude;
 			myLng = position.coords.longitude;
+			datastore("RobDennison", myLat, myLng);
 			renderMap();
 		});
 	}
@@ -36,6 +32,16 @@ function getMyLocation() {
 	}
 	console.log("Leaving getMyLocation()");
 }
+
+function datastore(login, lat, lng) {
+	request.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
+	request.send(to_send);
+}
+
+var marker;
+var info_window = new google.maps.InfoWindow();
 
 function renderMap()
 {
