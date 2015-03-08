@@ -4,7 +4,7 @@ var myLng = 0;
 var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var myOptions = {
-	zoom: 15, // The larger the zoom number, the bigger the zoom
+	zoom: 16, // The larger the zoom number, the bigger the zoom
 	center: me,
 	mapTypeId: google.maps.MapTypeId.ROADMAP
 };
@@ -38,6 +38,8 @@ function datastore(login, lat, lng) {
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 	request.send(to_send);
+	
+	console.log(request.responseText);
 
 	function renderPeers () {
 		if(request.readyState == 4 && request.status == 200) {
