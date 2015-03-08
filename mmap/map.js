@@ -78,18 +78,17 @@ function renderMap_myLocation()
 function renderMap(login, lat, lng)
 {
 	me = new google.maps.LatLng(lat, lng);
-	// Update map and go there...
-	map.panTo(me);
+
 	// Create a marker
 	marker = new google.maps.Marker({
 		position: me,
-		title: login
+		map: map
 	});
 	marker.setMap(map);
 	// Open info window on click of marker
 	google.maps.event.addListener(marker, 'click', function() {
 		info_window.close();
-		info_window.setContent(marker.title);
+		info_window.setContent(login);
 		info_window.open(map, this);
 	});
 }
