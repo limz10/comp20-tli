@@ -37,6 +37,12 @@ function datastore(login, lat, lng) {
 	request.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
+
+	request.onreadystatechange = function() {//Call a function when the state changes.
+		if(request.readyState == 4 && request.status == 200) {
+			alert(request.responseText);
+		}
+	}
 	request.send(to_send);
 }
 
@@ -50,7 +56,7 @@ function renderMap()
 	console.log("update map and go there...");
 	map.panTo(me);
 	// Create a marker
-	var makerImage = "limz.jpg";
+	var markerImage = "limz.jpg";
 	marker = new google.maps.Marker({
 		position: me,
 		title: "mli04",
