@@ -48,7 +48,7 @@ function renderPeers() {
 		alert(request.responseText);
 		console.log(request.responseText);
 		peers = JSON.parse(request.responseText);
-		for (i = 1; i < message.length; i++) {
+		for (i = 1; i < peers.length; i++) {
 			rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
 		}
 	}
