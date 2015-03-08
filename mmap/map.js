@@ -23,8 +23,8 @@ function getMyLocation() {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			myLat = position.coords.latitude;
 			myLng = position.coords.longitude;
+			renderMap_myLocation();
 			datastore("RobDennison", myLat, myLng);
-			renderMap();
 		});
 	}
 	else {
@@ -37,37 +37,56 @@ function datastore(login, lat, lng) {
 	request.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
+	request.send(to_send);
 
-	request.onreadystatechange = function() {//Call a function when the state changes.
+	function () {
 		if(request.readyState == 4 && request.status == 200) {
-			alert(request.responseText);
+			peers = JSON.parse(request.responseText);
+			for (i = 1; i < message.length; i++) {
+				rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
+			}
 		}
 	}
-	request.send(to_send);
+	
 }
 
 var marker;
 var info_window = new google.maps.InfoWindow();
 
-function renderMap()
+function renderMap_myLocation()
 {
 	me = new google.maps.LatLng(myLat, myLng);
 	// Update map and go there...
-	console.log("update map and go there...");
 	map.panTo(me);
 	// Create a marker
 	var markerImage = "limz.jpg";
 	marker = new google.maps.Marker({
 		position: me,
-		title: "mli04",
+		title: "RobDennison",
 		icon: markerImage
 	});
-
 	marker.setMap(map);
 	// Open info window on click of marker
 	google.maps.event.addListener(marker, 'click', function() {
 		info_window.setContent(marker.title);
 		info_window.open(map, marker);
 	});
-	
+}
+
+function renderMap(login, lat, lng)
+{
+	me = new google.maps.LatLng(lat, lng);
+	// Update map and go there...
+	map.panTo(me);
+	// Create a marker
+	marker = new google.maps.Marker({
+		position: me,
+		title: login
+	});
+	marker.setMap(map);
+	// Open info window on click of marker
+	google.maps.event.addListener(marker, 'click', function() {
+		info_window.setContent(marker.title);
+		info_window.open(map, marker);
+	});
 }
