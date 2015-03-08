@@ -38,7 +38,12 @@ function datastore(login, lat, lng) {
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 
+	request.onreadystatechange = renderPeers;
 
+	request.send(to_send);
+}
+
+function renderPeers() {
 	if(request.readyState == 4 && request.status == 200) {
 		alert(request.responseText);
 		console.log(request.responseText);
@@ -47,8 +52,6 @@ function datastore(login, lat, lng) {
 			rederMap(peers[i]["login"], peers[i]["lat"], peers[i]["lng"]);
 		}
 	}
-	
-	request.send(to_send);
 }
 
 var marker;
