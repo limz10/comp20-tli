@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 
 <html>
-
 <head>
 	<title>Captain's Log</title>
-	<meta charset="utf-8"></meta>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() {
-			$("#msg").bind("enter", function(e) {
-				var date = new Date();
-				var entry = date.toString() + " - " + $("input:text").val();
-				
-				$("#log").prepend(entry + "<br/>");
-
-				$("input:text").val("");  //clearing inputs
-			});
+			var output;
 
 			$("input:text").keyup(function(e) {
 				if(e.keyCode == 13) {
 					$(this).trigger("enter");
 				}
 			});
+
+			$("#msg").bind("enter", function(e) {
+				var date = new Date();
+				var entry = date.toString() + " - " + $("input:text").val();
+				localStorage.setItem(date.getTime(), entry);
+
+				$("#log").prepend(localStorage.getItem(date.getTime()) + "<br/>");	
+				
+				if (localStorage.getItem("captainLog")) {
+					output = entry + "<br/>" + localStorage.getItem("captainLog");
+				} else {
+					output = entry + "<br/>";
+				}
+				localStorage.setItem("captainLog", output);
+
+				$("input:text").val("");  //clearing inputs
+				});
+		});
+
+		$(window).on('load', function() {
+			if (localStorage.getItem("captainLog")) {
+				$("#log").prepend(localStorage.getItem("captainLog"));
+			}
 		});
 	</script>
 </head>
