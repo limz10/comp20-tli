@@ -9,8 +9,8 @@
 		$(document).ready(function() {
 		
 			$("#msg").bind("enterKey", function(e) {
-				var date = Date.UTC();
-				var entry = date + " - " + $("input:text").val();
+				var date = new Date();
+				var entry = date.toString() + " - " + $("input:text").val();
 				
 				$("#log").prepend();
 				$("#log").prepend(entry + "<br/>");
