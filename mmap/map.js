@@ -30,7 +30,7 @@ function getMyLocation() {
 }
 
 function datastore(login, lat, lng) {
-	request.open("POST", "https://secret-about-box.herokuapp.com/sendLocation", true);
+	request.open("POST", "https://aqueous-cliffs-4735.herokuapp.com/sendLocation", true);
 	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	var to_send = "login="+login+"&lat="+lat+"&lng="+lng;
 	request.send(to_send);
