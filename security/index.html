@@ -87,8 +87,7 @@ curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&am
     </p>
     <p> The application did not leak information and returned error on these attacks, which is good. </p>
 
-    <p> Note that there is a simple solution to address this issue, which is to get login using String(), e.g. </p>
-    <p> var login = String(request.body.login); </p>
+    <p> Note that there is a simple solution to address this issue, which is to get login using String(), e.g., var login = String(request.body.login); </p>
 <p>
 </p>
 
