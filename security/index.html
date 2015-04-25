@@ -26,9 +26,6 @@
 <p>
     <span>As a security consultant, I will try to find the potential vulnerabilities and offer solutions to address the issues.<br/></span>
 </p>
-<p>
-    <br/>
-</p>
 <hr/>
 <h3>
     <span>Methodology</span>
@@ -45,9 +42,6 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
     <span>First and the most obvious issue is that the implementation lacks a data validation process.&nbsp; Any user can send any login/latitude/longitude to the server.&nbsp; An excessive amount of false input will significantly embarrass the application.</span>
 </p>
 <p>
-    <br/>
-</p>
-<p>
     <span>Another critical issue is Cross-Site Scripting.&nbsp; The attackers could insert malicious scripts into the data sent to the&nbsp; /sendLocation API, which could lead to serious security issues.<br/></span>
 </p>
 <hr/>
@@ -60,14 +54,15 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
 <p>
     <span>The user is supposed to send a JSON of login, latitude, and longitude via a HTTP POST request.&nbsp; However, it is possible to include certain client-side scripts in a successful submission, such as the following in JavaScript:</span>
 </p>
-<pre class="brush:bash;toolbar:false">curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=0&quot; https://jsmaraudersmap.herokuapp.com/sendLocation</pre>
+curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=0&quot; https://jsmaraudersmap.herokuapp.com/sendLocation
 <p>
     <span>which will cause the server log page to pop up an alert window with potentially misleading message;</span>
 </p>
+    <img alt="mid of ocean" src="hacked.jpg"></img>
 <p>
     <span>the following is even worse:</span>
 </p>
-<pre class="brush:bash;toolbar:false">curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=&lt;script&gt;alert(&#39;again&#39;);&lt;/script&gt;&quot; https://jsmaraudersmap.herokuapp.com/sendLocation</pre>
+curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=&lt;script&gt;alert(&#39;again&#39;);&lt;/script&gt;&quot; https://jsmaraudersmap.herokuapp.com/sendLocation
 <p>
     <span>which will cause an application error.</span>
 </p>
@@ -77,7 +72,7 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
 <p>
     <span>A solution to resolve this issue is to create a whitelist of allowable characters, letters and numbers, to filter the input data.&nbsp; This approach can be applied by using </span>
 </p>
-<pre class="brush:js;toolbar:false">db.collection.update();</pre>
+db.collection.update();
 <p>
     <span>Similarly, we will need to verify if the input latitude and longitude are valid floating point numbers.</span>
 </p>
@@ -90,14 +85,9 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
 <p>
     <span>Because anyone can send any login, latitude, longitude to the server, somebody in Canada can pretend he/she is in Bermuda, or even in the middle of Atlantic Ocean.&nbsp; While this will not cause serious safety issues, an excessive amount of false data input would fail the map visualization.&nbsp; A map filled with pin points and fake information is useless.</span>
 </p>
-<p>
-    <br/>
-</p>
+    <img alt="mid of ocean" src="map.jpg"></img>
 <p>
     <span>In order to prevent that from happening, the application needs to verify the data input.&nbsp; Geolocation software services like Geolite can verify the user&#39;s location in accordance with its IP address.&nbsp; The application could call request.ip() to get the IP address and check if its location is near the provided latitude and longitude.&nbsp; If not, the application should not insert the input into the database.</span>
-</p>
-<p>
-    <br/>
 </p>
 <hr/>
 <h3>
