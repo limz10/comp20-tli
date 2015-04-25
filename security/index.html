@@ -49,7 +49,7 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
     <span>Issues Found</span>
 </h3>
 <h5>
-    <span>Cross-Site Scripting: HIGH</span>
+    <span>Cross-Site Scripting: HIGH | sendLocation API</span>
 </h5>
 <p>
     <span>The user is supposed to send a JSON of login, latitude, and longitude via a HTTP POST request.&nbsp; However, it is possible to include certain client-side scripts in a successful submission, such as the following in JavaScript:</span>
@@ -77,7 +77,7 @@ curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&am
     <br/>
 </p>
 <h5>
-    <span>Data Verification: MEDIUM</span>
+    <span>Data Verification: MEDIUM | sendLocation API | Also Affects Client-Side Map Visualization </span>
 </h5>
 <p>
     <span>Because anyone can send any login, latitude, longitude to the server, somebody in Canada can pretend he/she is in Bermuda, or even in the middle of Atlantic Ocean.&nbsp; While this will not cause serious safety issues, an excessive amount of false data input would fail the map visualization.&nbsp; A map filled with pin points and fake information is useless.</span>
