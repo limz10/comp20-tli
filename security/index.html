@@ -54,7 +54,9 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
 <p>
     <span>The user is supposed to send a JSON of login, latitude, and longitude via a HTTP POST request.&nbsp; However, it is possible to include certain client-side scripts in a successful submission, such as the following in JavaScript:</span>
 </p>
+<p>
 curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=0&quot; https://jsmaraudersmap.herokuapp.com/sendLocation
+</p>
 <p>
     <span>which will cause the server log page to pop up an alert window with potentially misleading message;</span>
 </p>
@@ -62,20 +64,34 @@ curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&am
 <p>
     <span>the following is even worse:</span>
 </p>
+<p>
 curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=&lt;script&gt;alert(&#39;again&#39;);&lt;/script&gt;&quot; https://jsmaraudersmap.herokuapp.com/sendLocation
+</p>
 <p>
     <span>which will cause an application error.</span>
 </p>
-<p>
-    <br/>
-</p>
+
 <p>
     <span>A solution to resolve this issue is to create a whitelist of allowable characters, letters and numbers, to filter the input data.&nbsp; This approach can be applied by using db.collection.update(); </span>
     <span>Similarly, we will need to verify if the input latitude and longitude are valid floating point numbers.</span>
 </p>
+
+<h5>
+    <span>Request Injection Attack : HIGH | location.json API</span>
+</h5>
 <p>
-    <br/>
+    <span>The request injection attacks are possible through MongoDB and the locations.json API, which should return a JSON of the data associated with a specific login.  If the login is invalid, it will return an empty JSON.  However, by using reqeust injection attack via MongoDB, login validation could be bypassed. I tested with the following examples:</span>
+    <p>[app_url]/locations.json?login[$ne]=yooo // return all data with logins NOT EQUAL to yooo</br>
+        [app_url]/locations.json?login[$regex]=.* // return all data matching the regular expression for everything</br>
+        [app_url]/locations.json?login[$gt]= // return all data greater than 'void'
+    </p>
+    <p> The application did not leak information and returned error on these attacks, which is good. </p>
+
+    <p> Note that there is a simple solution to address this issue, which is to get login using String(), e.g. </p>
+    <p> var login = String(request.body.login); </p>
+<p>
 </p>
+
 <h5>
     <span>Data Verification: MEDIUM | sendLocation API | Also Affects Client-Side Map Visualization </span>
 </h5>
@@ -99,9 +115,6 @@ lack of data validation when dealing with user input.&nbsp; By implementing the 
 </p>
 <p>
     <span>What safeguard measures should be applied depends on the need and goals of the developer.&nbsp; A balance between performance and security is important.&nbsp; This project encourages me to think more about that in future software development.</span>
-</p>
-<p>
-    <br/>
 </p>
 
 </body>
