@@ -3,33 +3,119 @@
 <head>
     <meta charset="utf-8"> </meta> 
     <title> Security Assessment of Marauder's Map </title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
-    <h1> Introduction </h1>
-    <p> This project tests the security of the Marauder's Map client-side and server-side application.  The Marauder's Map is a system where the user can check-in his/her location and view others' location on the map. </p>
-
-    <h1> Methodology </h1>
-    <p> I used simple tools like curl to look for vulnerabilities.  I also reviewed the source code to identify errors and lack of safeguard. </p>
-
-    <h1> Abstract of Findings </h1> 
-
-    <p> Provide an overview of all the security and privacy issues you identified. This section should be written for non-technical managers who do not have technical expertise and do not have time to read the entire document. Write this section using lay language. </p>
-
-    <h1> Issues Found </h1> 
-
-    <p> For each issue that you find, document:
-        Issue (e.g., database injection, really bad programming practice)
-        Location / page where issue was found
-        Severity of issue (e.g., low, medium , or high). Justify your answer.
-        Description of issue. How did you find it? A screenshot of problem is excellent.
-        Proof of vulnerability. Screenshots are ideal.
-        Resolution. How did you resolve the issue? Show code if possible.
-    </p>
-    
-    <h1> Conclusion </h1> 
-    <p> You can also list future considerations and recommendations with costs. </p>
+    <h1>
+    <span>Security Assessment for Marauder&#39;s Map</span>
+</h1>
+<p>
+    <span>by Mingzhe Li<br/></span>
+</p>
+<hr/>
+<h3>
+    <span>Introduction</span>
+</h3>
+<p>
+    <span>This project tests Justin Sullivan&#39;s security of the Marauder&#39;s Map client-side and server-side application.</span>
+</p>
+<p>
+    <span>The Marauder&#39;s Map is a system where the user can check-in his/her location and view others&#39; location on the map.</span>
+</p>
+<p>
+    <span>As a security consultant, I will try to find the potential vulnerabilities and offer solutions to address the issues.<br/></span>
+</p>
+<p>
+    <br/>
+</p>
+<hr/>
+<h3>
+    <span>Methodology</span>
+</h3>
+<p>
+    <span>The assessment of these applications consists of two parts: 
+a review of the source code followed by &quot;black-box&quot; testing. The test data will mostly be sent to the </span><code><span>/sendLocations</span></code><span> API of the server-side application using command-line tool </span><code><span>curl</span></code><span>.&nbsp;&nbsp;</span>
+</p>
+<hr/>
+<h3>
+    <span>Abstract of Findings</span>
+</h3>
+<p>
+    <span>First and the most obvious issue is that the implementation lacks a data validation process.&nbsp; Any user can send any login/latitude/longitude to the server.&nbsp; An excessive amount of false input will significantly embarrass the application.</span>
+</p>
+<p>
+    <br/>
+</p>
+<p>
+    <span>Another critical issue is Cross-Site Scripting.&nbsp; The attackers could insert malicious scripts into the data sent to the&nbsp; /sendLocation API, which could lead to serious security issues.<br/></span>
+</p>
+<hr/>
+<h3>
+    <span>Issues Found</span>
+</h3>
+<p>
+    <span><strong>Cross-Site Scripting</strong>:</span>
+</p>
+<p>
+    <span>The user is supposed to send a JSON of login, latitude, and longitude via a HTTP POST request.&nbsp; However, it is possible to include certain client-side scripts in a successful submission, such as the following in JavaScript:</span>
+</p>
+<pre class="brush:bash;toolbar:false">curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=0&quot; https://jsmaraudersmap.herokuapp.com/sendLocation</pre>
+<p>
+    <span>which will cause the server log page to pop up an alert window with potentially misleading message;</span>
+</p>
+<p>
+    <span>the following is even worse:</span>
+</p>
+<pre class="brush:bash;toolbar:false">curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&amp;lat=0&amp;lng=&lt;script&gt;alert(&#39;again&#39;);&lt;/script&gt;&quot; https://jsmaraudersmap.herokuapp.com/sendLocation</pre>
+<p>
+    <span>which will cause an application error.</span>
+</p>
+<p>
+    <br/>
+</p>
+<p>
+    <span>A solution to resolve this issue is to create a whitelist of allowable characters, letters and numbers, to filter the input data.&nbsp; This approach can be applied by using </span>
+</p>
+<pre class="brush:js;toolbar:false">db.collection.update();</pre>
+<p>
+    <span>Similarly, we will need to verify if the input latitude and longitude are valid floating point numbers.</span>
+</p>
+<p>
+    <br/>
+</p>
+<p>
+    <span><strong>Data Verification:</strong></span>
+</p>
+<p>
+    <span>Because anyone can send any login, latitude, longitude to the server, somebody in Canada can pretend he/she is in Bermuda, or even in the middle of Atlantic Ocean.&nbsp; While this will not cause serious safety issues, an excessive amount of false data input would fail the map visualization.&nbsp; A map filled with pin points and fake information is useless.</span>
+</p>
+<p>
+    <br/>
+</p>
+<p>
+    <span>In order to prevent that from happening, the application needs to verify the data input.&nbsp; Geolocation software services like Geolite can verify the user&#39;s location in accordance with its IP address.&nbsp; The application could call request.ip() to get the IP address and check if its location is near the provided latitude and longitude.&nbsp; If not, the application should not insert the input into the database.</span>
+</p>
+<p>
+    <br/>
+</p>
+<hr/>
+<h3>
+    <span>Conclusion</span>
+</h3>
+<p>
+    <span>In short, the security issues are created by a 
+lack of data validation when dealing with user input.&nbsp; By implementing the proper data validation, the security level of the application would be significantly enhanced.&nbsp; <br/></span>
+</p>
+<p>
+    <span>Security always comes at a cost.&nbsp; While these safegaurd measures being implemented, the performance of the application could be slowed down.&nbsp; Data validation could make the application more complicated, and sometimes it would rely on third-party APIs, Geolite in this case, which adds even more complexity.&nbsp; <br/></span>
+</p>
+<p>
+    <span>What safeguard measures should be applied depends on the need and goals of the developer.&nbsp; A balance between performance and security is important.&nbsp; This project encourages me to think more about that in future software development.</span>
+</p>
+<p>
+    <br/>
+</p>
 
 </body>
 </html>
