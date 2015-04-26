@@ -48,9 +48,9 @@ a review of the source code followed by &quot;black-box&quot; testing. The test 
 <h3>
     <span>Issues Found</span>
 </h3>
-<h5>
+<h4>
     <span>Cross-Site Scripting: HIGH | sendLocation API</span>
-</h5>
+</h4>
 <p>
     <span>The user is supposed to send a JSON of login, latitude, and longitude via a HTTP POST request.&nbsp; However, it is possible to include certain client-side scripts in a successful submission, such as the following in JavaScript:</span>
 </p>
@@ -76,9 +76,9 @@ curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&am
     <span>Similarly, we will need to verify if the input latitude and longitude are valid floating point numbers.</span>
 </p>
 
-<h5>
+<h4>
     <span>Request Injection Attack : HIGH | location.json API</span>
-</h5>
+</h4>
 <p>
     <span>The request injection attacks are possible through MongoDB and the locations.json API, which should return a JSON of the data associated with a specific login.  If the login is invalid, it will return an empty JSON.  However, by using reqeust injection attack via MongoDB, login validation could be bypassed. I tested with the following examples:</span>
     <p>[app_url]/locations.json?login[$ne]=yooo // return all data with logins NOT EQUAL to yooo</br>
@@ -91,9 +91,9 @@ curl --data &quot;login=&lt;script&gt;alert(&#39;hacked&#39;);&lt;/script&gt;&am
 <p>
 </p>
 
-<h5>
+<h4>
     <span>Data Verification: MEDIUM | sendLocation API | Also Affects Client-Side Map Visualization </span>
-</h5>
+</h4>
 <p>
     <span>Because anyone can send any login, latitude, longitude to the server, somebody in Canada can pretend he/she is in Bermuda, or even in the middle of Atlantic Ocean.&nbsp; While this will not cause serious safety issues, an excessive amount of false data input would fail the map visualization.&nbsp; A map filled with pin points and fake information is useless.</span>
 </p>
